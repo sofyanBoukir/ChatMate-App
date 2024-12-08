@@ -1,0 +1,13 @@
+export const Input = ({type,placeholder,required=true,value,onChange,name,size,readOnly=false,width}) => {
+  return (
+        <input type={type} 
+        placeholder={placeholder}
+        required={required}
+        value={value}
+        onChange={onChange}
+        maxLength={size}
+        name={name}
+        readOnly={readOnly}
+        className={`${width? `w-[${width}]` :'w-[100%]'} rounded-sm px-3 py-1 border border-gray-600 outline-none`} />
+    )
+}
