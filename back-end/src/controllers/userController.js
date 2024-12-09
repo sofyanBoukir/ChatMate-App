@@ -14,18 +14,18 @@ exports.addUser = async (request,response) => {
     try {
 
         const users = await User.find();
-        const usernameExists = users.find((user) => user.username === request.query.username);
+        const usernameExists = users.find((user) => user.username === request.body.username);
         if(usernameExists){
-            response.status(401).json({
+            response.status(200).json({
                 "message" : "Username already exist"
             })
             return
         }
-        const hashedPassword = await hashPassword(request.query.password)
+        const hashedPassword = await hashPassword(request.body.password)
         
         const newUser = new User({
-            fullName : request.query.fullName,
-            username : request.query.username,
+            fullName : request.body.fullName,
+            username : request.body.username,
             password : hashedPassword,
         });
         await newUser.save();
@@ -42,13 +42,13 @@ exports.addUser = async (request,response) => {
 
 exports.checkUserLogin = async (request,response) =>{
     try {
-        const {username,password} = request.query;
+        const {username,password} = request.body;
 
         const user = await User.findOne({username:username});
-        if(!user) return response.status(404).json({"isLoggedIn":false,"message":"User not found!"});
+        if(!user) return response.status(200).json({"isLoggedIn":false,"message":"User not found!"});
         
         const isValidCredentials = await bcrypt.compare(password,user.password);
-        if(!isValidCredentials) return response.status(401).json({"isLoggedIn":false,"message":"Invalid credentials!"});
+        if(!isValidCredentials) return response.status(200).json({"isLoggedIn":false,"message":"Invalid credentials!"});
 
         const CREDENTIALS = {
             id : user._id,
