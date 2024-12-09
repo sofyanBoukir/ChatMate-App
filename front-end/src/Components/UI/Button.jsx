@@ -5,10 +5,10 @@ export const Button = ({text,type,bg,loading,width,onClick}) => {
         <button type={type}
                 disabled={loading}
                 onClick={onClick}
-                className={`${width? `w-${width}`:'w-[100%]'} ${bg? `${bg}`:'bg-blue-700'} text-white py-1 rounded-sm cursor-pointer ${loading? 'cursor-no-drop':null}`}>
+                className={`${width? `w-${width}`:'w-[100%]'} ${bg? `${bg}`:'bg-blue-700'} h-9 font-semibold text-white rounded-sm text-md px-3 py-1 flex items-center justify-center ${loading? 'cursor-no-drop':null}`}>
                     {
                         loading ? 
-                            <CircularProgress size={"21px"} color="white"/>
+                            <CircularProgress size={"22px"} color="white"/>
                         : text
                     }
         </button>

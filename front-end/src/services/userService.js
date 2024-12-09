@@ -6,6 +6,6 @@ export const createNewUser = async (data) =>{
 }
 
 export const checkUserLogin = async (data) =>{
-    const response = await axios.post("http://localhost:3000/checkUserLogin",data);
-    return response;
+    const response = await axios.post("http://localhost:3000/checkUserLogin ",data);
+    return response;    
 }
