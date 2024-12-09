@@ -69,3 +69,19 @@ exports.checkUserLogin = async (request,response) =>{
         })
     }
 }
+
+exports.searchUsers = async (request,response) =>{
+    const users = await User.find({username:{$regex:`^${request.query.username}`}},{username:1,profilePicture:1})
+    if(users){
+        response.status(200).json({
+            "users" : users,
+        })
+        return
+    }
+    response.json({
+        "message" : "User not found!"
+    })
+    response.json({
+        "message" : "No users!"
+    })
+}
