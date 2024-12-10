@@ -8,6 +8,6 @@ export const Input = ({type,placeholder,required=true,value,onChange,name,size,r
         maxLength={size}
         name={name}
         readOnly={readOnly}
-        className={`${width? `w-[${width}]` :'w-[100%]'} rounded-sm px-3 py-1 border border-gray-600 outline-none`} />
+        className={`${width? `w-[${width}]` :'w-[100%]'} rounded-sm px-3 py-1 border-2 bg-inherit border-gray-600 outline-none`} />
     )
 }

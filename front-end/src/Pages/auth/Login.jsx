@@ -4,6 +4,7 @@ import { Label } from "../../Components/UI/Label"
 import { Button } from "../../Components/UI/Button"
 import { useState } from "react"
 import { checkUserLogin } from "../../services/userService"
+import { useDispatch } from "react-redux"
 
 export const Login = () => {
 
@@ -15,6 +16,7 @@ export const Login = () => {
   const navigate = useNavigate();
   const [loading,setLoading] = useState(false);
   const [message,setMessage] = useState('');
+  const dispatch = useDispatch();
 
   const handleChangeData = (e) =>{
     const {name,value} = e.target;
@@ -31,6 +33,8 @@ export const Login = () => {
     setLoading(false);
     
     if(response.data.isLoggedIn){
+      localStorage.setItem("token",response.data.token);
+      dispatch({type:"SET_USER_DATA",userData:response.data.user});
       navigate("/main");
       return
     }
@@ -38,7 +42,7 @@ export const Login = () => {
   }
 
   return (
-    <div className="w-[40%] rounded-md mx-auto px-5 py-8 mt-20 bg-gray-100 shadow-lg">
+    <div className="w-[90%] md:w-[40%] rounded-md mx-auto px-5 py-8 mt-20 bg-gray-900 text-white">
       <div>
         <h1 className="text-2xl font-semibold">Login page</h1>
         <span>Don't have an account? <Link to={"/register"} className="text-blue-700 underline">Sign up</Link></span>
