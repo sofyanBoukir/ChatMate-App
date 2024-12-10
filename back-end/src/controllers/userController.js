@@ -70,6 +70,24 @@ exports.checkUserLogin = async (request,response) =>{
     }
 }
 
+exports.updateUserData = async (request,response) =>{
+    const token = request.header("Authorization");
+    if(!token) return response.status(401).json({"message":"No token provided on the request!"})
+    
+    const {fullName,username,profilePicture} = request.query;
+    const decodedToken = JWT.verify(token,process.env.SECRET_KEY);
+    const userId = decodedToken.id;
+    const updateUser = await User.findByIdAndUpdate(
+        userId,
+        {fullName,username,profilePicture},
+        {new:true}
+    );
+    
+    if(!updateUser) return response.status(400).json({'message':'User not found'});
+    response.status(200).json({"updated":true,"user":updateUser});
+}
+
+
 exports.searchUsers = async (request,response) =>{
     const users = await User.find({username:{$regex:`^${request.query.username}`}},{username:1,profilePicture:1})
     if(users){
