@@ -72,16 +72,16 @@ export const Profile = () => {
   }
 
   return (
-    <div className="text-white">
+    <div>
         <Header />
-        <div className="px-16 mt-4 w-[90%] lg:w-[40%] mx-auto bg-gray-900 rounded-lg py-4">
+        <div className="px-16 mt-4 w-[90%] lg:w-[40%] mx-auto bg-gray-100 rounded-lg py-4">
             <div className="flex flex-col justify-center items-center">
                 <h1 className="text-2xl font-semibold">Profile</h1>
                 <span className="font-semibold">Your profile information</span>
                 <img src={userData.profilePicture ? userProfilePhoto : userDefaultImage} 
                 className="h-20 w-20 rounded-full border-2 border-blue-500 mt-5"/>
                 <input type="file" id="uploadImage" className="hidden" onChange={handleProfilePhotoChange}/>
-                <label htmlFor="uploadImage" className="text-xs mt-3 flex flex-row gap-1 items-center bg-blue-500 rounded-sm px-3 py-1 cursor-pointer">
+                <label htmlFor="uploadImage" className="text-xs mt-3 flex flex-row gap-1 items-center bg-blue-500 text-white rounded-sm px-3 py-1 cursor-pointer">
                     <CloudArrowUpIcon className="w-4 h-4"/>Upload image
                 </label>
             </div>
