@@ -74,12 +74,22 @@ exports.updateUserData = async (request,response) =>{
     const token = request.header("Authorization");
     if(!token) return response.status(401).json({"message":"No token provided on the request!"})
     
-    const {fullName,username,profilePicture} = request.query;
+    const {fullName,username,profilePicture} = request.body;
+    
     const decodedToken = JWT.verify(token,process.env.SECRET_KEY);
     const userId = decodedToken.id;
+
+    const usernameExists = await User.countDocuments({username:username,_id:{$ne:userId}});
+    if(usernameExists > 0) return response.status(200).json({"usernameAlreadyExist":true,"message":"Username Already exist!"});
+
     const updateUser = await User.findByIdAndUpdate(
         userId,
-        {fullName,username,profilePicture},
+        {fullName,username,
+            profilePicture: request.file ? {
+            data: request.file.buffer,
+            contentType: request.file.mimetype,
+          } : null
+        },
         {new:true}
     );
     
