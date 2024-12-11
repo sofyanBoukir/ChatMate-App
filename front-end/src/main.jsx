@@ -5,7 +5,7 @@ import { BrowserRouter } from 'react-router-dom'
 import { App } from './App'
 import { Provider } from 'react-redux'
 import { legacy_createStore } from 'redux'
-import { userReducer } from './redux/UserReduce'
+import { userReducer } from './redux/UserStore/UserReduce'
 
 const store = legacy_createStore(userReducer)
 

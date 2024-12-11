@@ -11,9 +11,10 @@ export const checkUserLogin = async (data) =>{
 }
 
 export const updateUserData = async (token,data) =>{
-    const response = await axios.put("htttp://localhost:3000/updateUserData",data,{
+    const response = await axios.put("http://localhost:3000/updateUserData",data,{
         headers :{
-            "Authorization" : `Bearer ${token}`
+            "Authorization" : `${token}`,
+            "Content-Type" : "multipart/form-data"
         }
     });
     return response;
