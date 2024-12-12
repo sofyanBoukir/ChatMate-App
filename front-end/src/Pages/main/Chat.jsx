@@ -6,21 +6,43 @@ import { Label } from "../../Components/UI/Label"
 import { UsersIcon } from "@heroicons/react/24/outline"
 import { UserInfo } from "../../Components/User/UserInfo"
 import { DefaultRightChat } from "../../Components/layout/DefaultRightChat"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Messages } from "../../Components/layout/Messages"
+import { searchUsersByUsername } from "../../services/userService"
+import { LinearProgress } from "@mui/material"
 
 export const Chat = () => {
 
   const userData = useSelector(userData => userData)
   const imageData = userData.profilePicture ? userData.profilePicture.data.data : null
   const [open,setOpen] = useState(false);
+  const [username,setUsername] = useState('');
+  const [users,setUsers] = useState([]);
+  const [loading,setLoading] = useState(false);
 
   if(imageData !== null){
     const base64String = btoa(String.fromCharCode(...new Uint8Array(imageData)));
     var userProfilePhoto = `data:image/jpeg;base64,${base64String}`;
   }
 
-  return (
+  const searchUsers = async () =>{
+    setLoading(true);
+    const response = await searchUsersByUsername(username,localStorage.getItem("token"));
+    setLoading(false);    
+    
+    if(response.data.founded){
+      setUsers(response.data.users)
+    }
+  }
+
+  useEffect(() =>{
+    if(username !== ''){
+      searchUsers();
+    }
+  },[username]);
+
+
+  return (  
     <div>
       <Header />
       <div className="px-2 md:px-16 mt-10">
@@ -32,15 +54,22 @@ export const Chat = () => {
             </div>
             <div className="mt-5 hidden md:block">
               <Label text={"Search for someone!"} />
-              <Input width={"100%"} placeholder={"username"}/>
+              <Input width={"100%"} placeholder={"username"} value={username} onChange={(e) => setUsername(e.target.value)}/>
             </div>
             <div className="mt-2">
               <div className="flex flex-col gap-2 h-80 overflow-auto">
-                <UserInfo userFullName={"Soufian"} username={"soso"} profilePhoto={userDefaultImage} onClick={() => setOpen(true)}/>
-                <UserInfo userFullName={"Soufian"} username={"soso"} profilePhoto={userDefaultImage} />
-                <UserInfo userFullName={"Soufian"} username={"soso"} profilePhoto={userDefaultImage} />
-                <UserInfo userFullName={"Soufian"} username={"soso"} profilePhoto={userDefaultImage} />
-                <UserInfo userFullName={"Soufian"} username={"soso"} profilePhoto={userDefaultImage} />
+                {
+                  users && users.length ? 
+                    users.map((user) => {
+                      return <>
+                        <UserInfo userFullName={user.fullName} username={user.username} profilePhoto={user.profilePicture} onClick={() => setOpen(true)}/>
+                      </>
+                    })
+                  : null
+                }
+                {
+                  loading && <LinearProgress />
+                }
               </div>
             </div>
           </div>

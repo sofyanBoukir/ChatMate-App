@@ -12,6 +12,7 @@ export const Notification = ({message,kind}) => {
             <Alert
                 severity={kind}
                 sx={{ width: '100%' }}
+                variant="filled"
             >
                 {message}
             </Alert>
