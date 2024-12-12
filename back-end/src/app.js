@@ -15,4 +15,5 @@ const corsOptions = {
 app.use(cors(corsOptions))
 app.use(express.json())
 app.use("/",routes)
+
 module.exports = app
