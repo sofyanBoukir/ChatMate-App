@@ -6,10 +6,13 @@ import { Label } from "../../Components/UI/Label"
 import { UsersIcon } from "@heroicons/react/24/outline"
 import { UserInfo } from "../../Components/User/UserInfo"
 import { DefaultRightChat } from "../../Components/layout/DefaultRightChat"
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { Messages } from "../../Components/layout/Messages"
 import { searchUsersByUsername } from "../../services/userService"
 import { LinearProgress } from "@mui/material"
+import io from "socket.io-client"
+
+const socket = io("http://localhost:3000")
 
 export const Chat = () => {
 
@@ -19,11 +22,21 @@ export const Chat = () => {
   const [username,setUsername] = useState('');
   const [users,setUsers] = useState([]);
   const [loading,setLoading] = useState(false);
+  const [mounted,setMounted] = useState(false);
 
   if(imageData !== null){
     const base64String = btoa(String.fromCharCode(...new Uint8Array(imageData)));
     var userProfilePhoto = `data:image/jpeg;base64,${base64String}`;
   }
+
+  useEffect(() =>{  
+    socket.emit("userConnected",userData._id);
+    setMounted(true);
+    
+    if(mounted){
+      return () => socket.disconnect();
+    }
+  },[mounted])
 
   const searchUsers = async () =>{
     setLoading(true);
