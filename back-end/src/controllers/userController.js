@@ -99,9 +99,15 @@ exports.updateUserData = async (request,response) =>{
 
 
 exports.searchUsers = async (request,response) =>{
-    const users = await User.find({username:{$regex:`^${request.query.username}`}},{username:1,profilePicture:1})
+    const token = request.header("Authorization");
+    if(!token) return response.status(401).json({"message":"No token provided on the request!"});
+    const authUserUsename = JWT.verify(token,process.env.SECRET_KEY).username;
+
+    const users = await User.find({$and:[{username:{$regex:`^${request.query.username}`}},{username:{$ne:authUserUsename}}]},{username:1,fullName:1,status:1,profilePicture:1});
+
     if(users){
         response.status(200).json({
+            "founded":true,
             "users" : users,
         })
         return
