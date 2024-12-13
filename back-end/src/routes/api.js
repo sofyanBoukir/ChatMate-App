@@ -15,6 +15,6 @@ router.put("/updateUserData",upload.single("profilePicture"),updateUserData)
 
 // messages routes
 router.get("/getMessages",checkUserExists,getMessages);
-router.post("/sendNewMessage",checkUserExists,sendNewMessage);
+router.post("/sendNewMessage",sendNewMessage);
 
 module.exports = router;

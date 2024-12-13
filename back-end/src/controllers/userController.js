@@ -12,7 +12,6 @@ const hashPassword = async (password) =>{
 
 exports.addUser = async (request,response) => {
     try {
-
         const users = await User.find();
         const usernameExists = users.find((user) => user.username === request.body.username);
         if(usernameExists){
