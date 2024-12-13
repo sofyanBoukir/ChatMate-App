@@ -11,6 +11,7 @@ import { Messages } from "../../Components/layout/Messages"
 import { searchUsersByUsername } from "../../services/userService"
 import { LinearProgress } from "@mui/material"
 import io from "socket.io-client"
+import { getMessages } from "../../services/messageService"
 
 const socket = io("http://localhost:3000")
 
@@ -23,7 +24,11 @@ export const Chat = () => {
   const [users,setUsers] = useState([]);
   const [loading,setLoading] = useState(false);
   const [mounted,setMounted] = useState(false);
+  const [userToChat,setUserToChat] = useState();
+  const [messagesLoading,setMessagesLoading] = useState(false);
+  const [messages,setMessages] = useState([]);
 
+  
   if(imageData !== null){
     const base64String = btoa(String.fromCharCode(...new Uint8Array(imageData)));
     var userProfilePhoto = `data:image/jpeg;base64,${base64String}`;
@@ -46,6 +51,20 @@ export const Chat = () => {
     if(response.data.founded){
       setUsers(response.data.users)
     }
+  }
+
+
+  const showMessages = async (userToChatData) =>{
+    setUserToChat(userToChatData);
+    setMessages([]);
+    setMessagesLoading(true);
+    const response = await getMessages(userData._id,userToChatData._id);
+    
+    setMessagesLoading(false);
+    if(response.data.messages){
+      setMessages(response.data.messages);
+    }
+    setOpen(true);
   }
 
   useEffect(() =>{
@@ -75,7 +94,7 @@ export const Chat = () => {
                   users && users.length ? 
                     users.map((user) => {
                       return <>
-                        <UserInfo userFullName={user.fullName} username={user.username} profilePhoto={user.profilePicture} onClick={() => setOpen(true)}/>
+                        <UserInfo status={user.status} username={user.username} profilePhoto={user.profilePicture} id={user._id} onClick={() => showMessages(user)}/>
                       </>
                     })
                   : null
@@ -89,7 +108,7 @@ export const Chat = () => {
             {
               open ?
                 <div className="w-[75%] md:w-[65%] rounded-sm border bg-gray-200">
-                  <Messages />
+                  <Messages loading={messagesLoading} messagesData={messages} userToChat={userToChat}/>
                 </div>
                 :
                 <div className="w-[75%] md:w-[65%] flex justify-center items-center text-center rounded-sm border bg-gray-200">
