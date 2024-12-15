@@ -1,4 +1,4 @@
-const Message  = require("../models/Message")
+const Message  = require("../models/Message");
 
 exports.getMessages = async (request,response) =>{
 
@@ -15,13 +15,13 @@ exports.getMessages = async (request,response) =>{
 
 exports.sendNewMessage = async (request,response) =>{
     const {senderId,receiverId,message} = request.query;
-    
+
     const newMessage = new Message({
         sender_id : senderId,
         receiver_id : receiverId,
         message : message,
     })  
-
+    
     await newMessage.save();
     response.status(200).json({
         "sent":true,

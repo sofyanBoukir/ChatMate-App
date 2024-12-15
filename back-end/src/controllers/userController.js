@@ -51,7 +51,6 @@ exports.checkUserLogin = async (request,response) =>{
 
         const CREDENTIALS = {
             id : user._id,
-            username : user.username,
         }
 
         const token = JWT.sign(CREDENTIALS,process.env.SECRET_KEY);
@@ -98,11 +97,9 @@ exports.updateUserData = async (request,response) =>{
 
 
 exports.searchUsers = async (request,response) =>{
-    const token = request.header("Authorization");
-    if(!token) return response.status(401).json({"message":"No token provided on the request!"});
-    const authUserUsename = JWT.verify(token,process.env.SECRET_KEY).username;
+    const authUsername = request.query.authUsername; 
 
-    const users = await User.find({$and:[{username:{$regex:`^${request.query.username}`}},{username:{$ne:authUserUsename}}]},{username:1,fullName:1,status:1,profilePicture:1});
+    const users = await User.find({$and:[{username:{$regex:`^${request.query.username}`}},{username:{$ne:authUsername}}]},{username:1,fullName:1,status:1,lastSeen:1,profilePicture:1});
 
     if(users){
         response.status(200).json({

@@ -1,5 +1,6 @@
 const socketIo = require("socket.io")
 const User = require("../models/User")
+const { now } = require("mongoose")
 
 exports.handleUserStatus = (server) =>{
 
@@ -21,11 +22,12 @@ exports.handleUserStatus = (server) =>{
     
         socket.on("disconnect",async () =>{
             console.log("disconnected")
+            var date = new Date();
             if (socket.userId) { 
                 try {
                     await User.findByIdAndUpdate(
                         { _id: socket.userId },
-                        { status: "offline" }
+                        { status: "offline", lastSeen : date},
                     );
                     console.log(`User ${socket.userId} disconnected and is now offline`);
                 } catch (error) {

@@ -8,7 +8,8 @@ const userShema = new mongoose.Schema({
         data: Buffer,
         contentType: String,
       },
-    status : {type: String, enum:['online','offline'], default:"offline"}
+    status : {type: String, enum:['online','offline'], default:"offline"},
+    lastSeen : {type: Date, default: Date.now}, 
 },{timestamps:true})
 
 module.exports = mongoose.model("User",userShema)
