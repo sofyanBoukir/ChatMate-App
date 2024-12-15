@@ -1,12 +1,11 @@
 import { useSelector } from "react-redux"
 import { Header } from "../../Components/layout/Header"
-import userDefaultImage from "../../../public/userDefaultImage.jpg"
 import { Input } from "../../Components/UI/Input"
 import { Label } from "../../Components/UI/Label"
 import { UsersIcon } from "@heroicons/react/24/outline"
 import { UserInfo } from "../../Components/User/UserInfo"
 import { DefaultRightChat } from "../../Components/layout/DefaultRightChat"
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useState } from "react"
 import { Messages } from "../../Components/layout/Messages"
 import { searchUsersByUsername } from "../../services/userService"
 import { LinearProgress } from "@mui/material"
@@ -28,12 +27,6 @@ export const Chat = () => {
   const [messagesLoading,setMessagesLoading] = useState(false);
   const [messages,setMessages] = useState([]);
 
-  
-  if(imageData !== null){
-    const base64String = btoa(String.fromCharCode(...new Uint8Array(imageData)));
-    var userProfilePhoto = `data:image/jpeg;base64,${base64String}`;
-  }
-
   useEffect(() =>{  
     socket.emit("userConnected",userData._id);
     setMounted(true);
@@ -45,14 +38,17 @@ export const Chat = () => {
 
   const searchUsers = async () =>{
     setLoading(true);
-    const response = await searchUsersByUsername(username,localStorage.getItem("token"));
-    setLoading(false);    
+    const response = await searchUsersByUsername(username,userData.username);
+    setLoading(false);
     
     if(response.data.founded){
       setUsers(response.data.users)
     }
   }
 
+  const appendMessage = (newMessage) => {
+    setMessages((prevMessages) => [...prevMessages, newMessage]);
+  };
 
   const showMessages = async (userToChatData) =>{
     setUserToChat(userToChatData);
@@ -78,7 +74,7 @@ export const Chat = () => {
     <div>
       <Header />
       <div className="px-2 md:px-16 mt-10">
-        <div className="bg-gray-100 w-[90%] mx-auto rounded-md px-3 py-6 flex justify-between">
+        <div className="bg-gray-950 text-white w-[90%] mx-auto rounded-md px-3 py-6 flex justify-between">
           <div className="w-[20%] md:w-[30%]">
             <div className="flex flex-row items-end">
               <UsersIcon className="w-8 h-8"/>
@@ -107,11 +103,11 @@ export const Chat = () => {
           </div>
             {
               open ?
-                <div className="w-[75%] md:w-[65%] rounded-sm border bg-gray-200">
-                  <Messages loading={messagesLoading} messagesData={messages} userToChat={userToChat}/>
+                <div className="w-[75%] md:w-[65%] rounded-sm bg-gray-950">
+                  <Messages loading={messagesLoading} appendMessage={appendMessage} messages={messages} userToChat={userToChat}/>
                 </div>
                 :
-                <div className="w-[75%] md:w-[65%] flex justify-center items-center text-center rounded-sm border bg-gray-200">
+                <div className="w-[75%] md:w-[65%] flex justify-center items-center text-center rounded-sm bg-gray-950">
                   <DefaultRightChat />
                 </div>
             }

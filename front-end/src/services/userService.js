@@ -20,13 +20,7 @@ export const updateUserData = async (token,data) =>{
     return response;
 }
 
-export const searchUsersByUsername = async (username,token) =>{
-    const response = await axios.get(`http://localhost:3000/searchUsers?username=${username}`,
-        {
-            headers :{
-                "Authorization" : token
-            }
-        }
-    );
+export const searchUsersByUsername = async (username,authUsername) =>{
+    const response = await axios.get(`http://localhost:3000/searchUsers?username=${username}&authUsername=${authUsername}`);
     return response;
 }

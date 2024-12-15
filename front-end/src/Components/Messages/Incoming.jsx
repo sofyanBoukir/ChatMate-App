@@ -24,9 +24,9 @@ export const Incoming = ({text,sendAt,profilePhoto}) => {
         <div className="flex justify-start items-start gap-1">
             <img src={userProfilePhoto ? userProfilePhoto : userDefaultImage} className="rounded-full h-6 w-6"/>
             <div className="text-white bg-blue-600 rounded-xl rounded-tl-sm px-2 py-1 text-start max-w-[80%]">
-                {text}
+                <span className="font-semibold">{text}</span>
                 <br></br>
-                <span className="text-gray-200 text-xs float-right">{formatDateTime(sendAt)}</span>
+                <span className="text-gray-300 text-xs float-right">{formatDateTime(sendAt)}</span>
             </div>
         </div>
     )

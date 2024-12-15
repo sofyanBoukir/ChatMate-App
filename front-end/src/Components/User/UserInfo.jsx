@@ -8,7 +8,7 @@ export const UserInfo = ({status,username,profilePhoto,id,onClick}) => {
         var userProfilePhoto = `data:image/jpeg;base64,${base64String}`;
     }
   return (
-        <div className="w-[100%] px-3 py-1 flex flex-row gap-2 items-center cursor-pointer hover:bg-gray-200 duration-200" onClick={onClick}>
+        <div className="w-[100%] px-3 py-1 flex flex-row gap-2 items-center cursor-pointer hover:bg-gray-900 duration-200" onClick={onClick}>
             <div>
                 <img src={userProfilePhoto ? userProfilePhoto : userDefaultImage} className="rounded-full h-10 w-10 border-2 border-blue-500"/>
             </div>

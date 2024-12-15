@@ -74,7 +74,7 @@ export const Profile = () => {
   return (
     <div>
         <Header />
-        <div className="px-16 mt-4 w-[90%] lg:w-[40%] mx-auto bg-gray-100 rounded-lg py-4">
+        <div className="px-16 mt-4 w-[90%] lg:w-[40%] mx-auto bg-gray-950 text-white rounded-lg py-4">
             <div className="flex flex-col justify-center items-center">
                 <h1 className="text-2xl font-semibold">Profile</h1>
                 <span className="font-semibold">Your profile information</span>

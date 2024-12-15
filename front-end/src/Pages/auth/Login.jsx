@@ -42,7 +42,7 @@ export const Login = () => {
   }
 
   return (
-    <div className="w-[90%] md:w-[40%] rounded-md mx-auto px-5 py-8 mt-20 bg-gray-900 text-white">
+    <div className="w-[90%] md:w-[40%] rounded-md mx-auto px-5 py-8 mt-20 bg-gray-950 text-white">
       <div>
         <h1 className="text-2xl font-semibold">Login page</h1>
         <span>Don't have an account? <Link to={"/register"} className="text-blue-700 underline">Sign up</Link></span>
